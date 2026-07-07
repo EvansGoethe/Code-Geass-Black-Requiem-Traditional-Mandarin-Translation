@@ -1,7 +1,7 @@
 ﻿﻿l_simp_chinese:
- eu_member:0 "E.U. Member"
- eu_protectorate:0 "E.U. Protectorate"
- eu_outer_sphere:0 "Outer Sphere"
- eu_inner_sphere:0 "Inner Sphere"
- eu_colony:0 "E.U. Colonial State"
- eu_ass_member:0 "E.U. Associated Member"
+ eu_member:0 "E.U.成員國"
+ eu_protectorate:0 "E.U.保護國"
+ eu_outer_sphere:0 "外圍勢力圈"
+ eu_inner_sphere:0 "核心勢力圈"
+ eu_colony:0 "E.U.殖民領"
+ eu_ass_member:0 "E.U.準成員國"
