@@ -23,14 +23,12 @@ jobs:
           PT_PROJECT_ID: ${{ secrets.PARATRANZ_PROJECT_ID }}
         run: |
           echo "開始從 ParaTranz 獲取翻譯..."
-          echo "檢查 Project ID 是否有讀取到: $PT_PROJECT_ID"
           
-          # 下載檔案，並同時抓取 HTTP 狀態碼
-          HTTP_STATUS=$(curl -s -w "%{http_code}" -H "Authorization: $PT_TOKEN" "https://paratranz.cn/api/projects/$PT_PROJECT_ID/artifacts/download" -o translation.zip)
+          # 🛑 關鍵修復：加入 -L 參數，讓 curl 自動跟隨 302 轉址去下載真正的檔案
+          HTTP_STATUS=$(curl -s -L -w "%{http_code}" -H "Authorization: $PT_TOKEN" "https://paratranz.cn/api/projects/$PT_PROJECT_ID/artifacts/download" -o translation.zip)
           
-          echo "ParaTranz 伺服器回傳狀態碼: $HTTP_STATUS"
+          echo "最終伺服器回傳狀態碼: $HTTP_STATUS"
           
-          # 如果狀態碼不是 200 (成功)，就印出錯誤內容並中斷
           if [ "$HTTP_STATUS" -ne 200 ]; then
             echo "❌ 下載失敗！伺服器回傳的真實內容是："
             cat translation.zip
