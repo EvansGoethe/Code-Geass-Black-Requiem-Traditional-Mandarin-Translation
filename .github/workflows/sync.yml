@@ -1,19 +1,19 @@
 name: 📥 從 ParaTranz 同步翻譯
 
 on:
-  workflow_dispatch: # 允許在 GitHub 網頁上手動點擊執行
+  workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *' # 每天 UTC 時間 0 點 (台灣時間早上 8 點) 自動跑一次
+    - cron: '0 0 * * *'
 
 jobs:
   sync-and-process:
     runs-on: ubuntu-latest
     steps:
       - name: 檢出代碼倉庫
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # 🛑 升級為 v4 以解決警告
 
       - name: 準備 Python 環境
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5 # 🛑 升級為 v5 以解決警告
         with:
           python-version: '3.10'
 
@@ -23,39 +23,34 @@ jobs:
           PT_PROJECT_ID: ${{ secrets.PARATRANZ_PROJECT_ID }}
         run: |
           echo "開始從 ParaTranz 獲取翻譯..."
-          curl -s -H "Authorization: $PT_TOKEN" "https://paratranz.cn/api/projects/$PT_PROJECT_ID/artifacts/download" -o translation.zip
+          # 🛑 加入 -f 參數，若授權失敗或找不到檔案會直接報錯 HTTP 錯誤
+          curl -s -f -H "Authorization: $PT_TOKEN" "https://paratranz.cn/api/projects/$PT_PROJECT_ID/artifacts/download" -o translation.zip
           unzip -o translation.zip -d ./pt_download/
 
       - name: 處理 P社專用格式 (轉 UTF-8 BOM 與語言替換)
         run: |
           python -c "
           import os, glob, codecs
-          # 建立你要存放本地化檔案的目標資料夾
           target_dir = 'localisation/simp_chinese'
           os.makedirs(target_dir, exist_ok=True)
           
-          # 尋找所有下載下來的 yml 檔案
           for filepath in glob.glob('./pt_download/**/*.yml', recursive=True):
               filename = os.path.basename(filepath)
-              # 自動把檔名裡的 english 換成 simp_chinese
               new_filename = filename.replace('l_english', 'l_simp_chinese')
               new_filepath = os.path.join(target_dir, new_filename)
 
               with codecs.open(filepath, 'r', encoding='utf-8') as f:
                   content = f.read()
 
-              # 自動把內容第一行的 l_english: 換成 l_simp_chinese:
               content = content.replace('l_english:', 'l_simp_chinese:')
 
-              # 關鍵：寫入 UTF-8 with BOM (utf-8-sig) 格式！
               with codecs.open(new_filepath, 'w', encoding='utf-8-sig') as f:
                   f.write(content)
           "
-          # 清理下載暫存檔
           rm -rf translation.zip pt_download/
 
       - name: 自動提交與推送到 GitHub
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5 # 🛑 升級為 v5
         with:
           commit_message: "Auto-sync: 更新來自 ParaTranz 的最新翻譯"
           branch: main
