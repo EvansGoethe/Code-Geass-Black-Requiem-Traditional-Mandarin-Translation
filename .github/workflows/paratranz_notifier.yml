@@ -12,9 +12,9 @@ jobs:
       - name: Fetch Paratranz History and Notify Discord
         env:
           # 關鍵修正：確保這裡的名稱與下方 Python 讀取的 os.getenv 完全一致
-          PARATRANZ_TOKEN: ${{ secrets.PARATRANZ_TOKEN }}
-          PARATRANZ_PROJECT_ID: ${{ secrets.PARATRANZ_PROJECT_ID }}
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          PT_TOKEN: ${{ secrets.PARATRANZ_TOKEN }}
+          PT_PROJECT_ID: ${{ secrets.PARATRANZ_PROJECT_ID }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
           python3 -c "
           import os, datetime, urllib.request, json
