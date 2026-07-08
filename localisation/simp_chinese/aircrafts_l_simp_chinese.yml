@@ -42,6 +42,7 @@
  helicopter_equipment_2:0 "攻擊直升機 II"
  helicopter_equipment_2_desc:0 "現代攻擊直升機的主要角色有兩個：一是通過直射火力爲地面部隊精準的提供近距空中支援；二是作爲反坦克單位摧毀敵方裝甲集羣，攻擊直升機也被用於護送運輸直升機，或者在武裝偵查任務中支援輕型直升機。"
  hel2:0 "現代攻擊直升機的主要角色有兩個：一是通過直射火力爲地面部隊精準的提供近距空中支援；二是作爲反坦克單位摧毀敵方裝甲集羣，攻擊直升機也被用於護送運輸直升機，或者在武裝偵查任務中支援輕型直升機。"
+ hel2_desc:0 "Modern attack helicopters have two primary roles: first, to provide direct and accurate close air support for ground troops; and second, the anti-tank role to destroy grouped enemy armor. Attack helicopters are also used as protective escort for transport helicopters, or to supplement lighter helicopters in the armed reconnaissance roles."
  hel_improve:0 "通用直升機改進"
  hel_improve_desc:0 "攻擊直升機現在可以使用機關炮、機關槍、火箭彈、反坦克導彈等武器。一些攻擊直升機還可以裝配備了空對空導彈。"
  trans1:0 "運輸機 I"

@@ -788,7 +788,6 @@
  mobilization_laws_cost_factor:0 "£conscription_laws_cost_texticon 徵兵法案花費"
  trade_laws_cost_factor:0 "£trade_laws_cost_texticon 貿易法案花費"
  economy_cost_factor:1 "£economy_laws_cost_texticon 經濟法案花費"
- political_advisor_cost_factor:0 "£political_advisor_cost_texticon 政治顧問花費"
  tank_manufacturer_cost_factor:1 "£manufacturer_tank_cost_texticon 坦克設計商花費"
  naval_manufacturer_cost_factor:1 "£manufacturer_naval_cost_texticon 海軍設計商花費"
  aircraft_manufacturer_cost_factor:1 "£manufacturer_air_cost_texticon 飛機設計商花費"

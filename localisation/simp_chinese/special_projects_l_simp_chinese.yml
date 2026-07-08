@@ -9,6 +9,8 @@
  sp_longdan_desc:0 "中華聯邦的運作方式實在令人費解。某位大宦官想出一個絕妙的點子，在紙上塗鴉出拙劣的設計，然後要求將其製作出來。如果這真能實現，恐怕算是奇蹟了。"
  sp_g1_base:0 "G-1移動基地概念"
  sp_g1_base_desc:0 ""
+ sp_leviathan_class:0 "Leviathan-class Land Battleship"
+ sp_leviathan_class_desc:0 ""
  ESTABLISHING_PROJECT_STATE: "建立"
  INITIAL_RESEARCH_STATE: "初步研究"
  PROTOTYPE_STATE: "原型"

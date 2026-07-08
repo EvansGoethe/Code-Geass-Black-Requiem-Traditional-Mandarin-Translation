@@ -1,0 +1,10 @@
+﻿﻿l_simp_chinese:
+ solar_panels:0 "Solar Panels"
+ solar_panels_plural:0 "Solar Panels"
+ solar_panels_desc:0 "This building provides the state with"
+ solar_panels_amount:0 "$VALUE|Y0=$"
+ solar_panels_resource:0 "£resources_strip|$FRAME$"
+ ARE_settlement:0 "Settlement"
+ ARE_settlement_desc:0 ""
+ EUU_castle_weisswolf:0 "Castle Weisswolf"
+ EUU_castle_weisswolf_desc:0 ""

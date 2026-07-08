@@ -3,4 +3,7 @@
  future_content_dod_tt:0 "§R未來的內容將隨着§!§G民主之死而增加。§!"
  future_content_pu_tt:0 "§R未來的內容將在§!§G太平洋更新一同添加。§!"
  future_content_oc_tt:0 "§R未來的內容將隨着§!§G東方危機而增加。§!"
+ future_content_undecided_tt:0 "§RFuture Content Is Undecided For This Nation.§!"
  WIP:0 "§RWIP - 工作進行中，此處無內容§!"
+ beta_content_end_tt:0 "§RThis is the end of this Beta's content.§!"
+ content_end_tt:0 "§RThis is the end of this nations's content.§!"

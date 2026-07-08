@@ -51,4 +51,5 @@
  sp_artillery_3_desc:0 "Having reached its maximum development, SP artillery has only adapted to a more computerized system, with less and less work being done by human operators. Capabilities have also improved with larger spaces for ammunitions as well, and multiple defenses against different attacks."
  sakuradite_engine:0 "Sakuradite Engine"
  sakuradite_engine_desc:0 "In order to further improve SP artillery's mobility and firepower, some fragments of Sakuradite and a small and simpler version of the Yggdrasil Engine will be implemented inside the vehicles. Although it will present an high risk of potential self-damages, even deadly, it will give a great advantage over the enemy."
+ super_heavy_artillery:0 "Super Heavy Artillery"
  super_heavy_artillery_desc:0 "The artillery a is pyramid-shaped land-cruising mobile fortress. It has two large cannons and thirteen smaller cannons. Certain models are equipped with tank treads for land mobility, while others have hover systems to levitate across bodies of water. The Longdan's large cannons pretty much serve the same role as their main guns can destroy most knightmare frame that get within firing range."
