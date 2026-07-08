@@ -1,5 +1,5 @@
 ﻿﻿l_simp_chinese:
- government_change:0 "手動更換內閣顧問"
+ government_change:0 "手動更換內閣顧問l"
  CHANGE_ADVISOR:1 "\n你可以點擊這裡並選擇替換以移除此顧問。"
  ALREADY_HAS_ADVISOR_WITH_TRAIT:0 "已經任用一位具有該特質的顧問。"
  EIZ_Supremacism:0 "§Y霸權主義政黨執政§!"
