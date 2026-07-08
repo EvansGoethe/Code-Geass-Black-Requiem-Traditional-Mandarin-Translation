@@ -850,7 +850,7 @@
  ARG_ship_armor_bb_1:0 "280mm主裝甲/76mm甲板裝甲"
  ARG_ship_armor_cruiser_1:0 "70mm主裝甲/25mm甲板裝甲"
  BRA_ship_light_battery_1:0 "102mm/40 速射炮 Mk IV"
- BRA_ship_light_battery_2:0 "127mm/38 Mk 12 SP"
+ BRA_ship_light_battery_2:0 "127mm/38 12型（單用途）"
  BRA_ship_light_battery_3:0 "127mm/38 Mk 12 SP（遙控火炮）"
  BRA_ship_heavy_battery_1:0 "30.5 cm/45 埃爾斯維克 L"
  BRA_ship_heavy_battery_2:0 "35.6cm火炮"

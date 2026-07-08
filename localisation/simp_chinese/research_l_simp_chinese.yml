@@ -383,7 +383,7 @@
  gefjun_disturber_impr_desc:0 "除了反櫻石特性外，這種裝置還可以進行改進以產生其他效果，例如控制基於強子的武器的綻放效應，以及形成抵禦基於強子和MVS的武器的防禦護盾。"
  anti_FLEIJA:0 "F.L.E.I.J.A.消除器"
  anti_FLEIJA_desc:0 "作爲對抗F.L.E.I.J.A.的手段，它利用了F.L.E.I.J.A.不斷變化的成分，通過一種能抵消其成分的反應對其進行轟擊，從而阻止它達到臨界狀態。"
- nukes:0 "FLEIJA"
+ nukes:0 "核子武器"
  nukes_desc:0 "我成了死神，世界的毀滅者。"
  interwar_artillery:0 "戰間期型火炮"
  interwar_artillery_desc:0 "在發展各種火炮過程中積累的經驗可被交叉應用到其他種類。"

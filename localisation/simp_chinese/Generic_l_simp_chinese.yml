@@ -145,7 +145,7 @@
  gen_one_party_one_state:0 "一黨一國"
  gen_one_party_one_state_desc:0 "只有一黨總攬政府的方方面面，我們的政治機構才能真正地運行。只要有任何反對都會妨礙對國家和人民的治理——這種想法真讓人震驚"
  gen_liberalism:0 "溫和自由主義"
- gen_liberalism_desc:0 "With monarchs ruling the world and the EU adopting the idea of an authoritarian democracy among their members, any sort of politically centered state becomes a liberal haven by comparison. Though these nations are liberal in name only, their relaxed ideologies make them the safest places to live."
+ gen_liberalism_desc:0 "在君主們統治世界、EU又在成員國間奉行威權民主的當下，任何政治上居中的國家相較之下都成了自由主義的天堂。儘管這些國家的自由徒有其名，其寬鬆的意識形態仍使它們成為最宜居住的安全之地。"
  gen_moderate_liberalism:0 "溫和自由主義"
  gen_moderate_liberalism_desc:0 "在這個時代自由主義已經十分少見，因爲皇帝查爾斯·zi·不列顛尼亞會直接扼殺所有自稱開放社會的國家。只有EU和少數其他國家敢於涉足自由主義理念。"
  gen_conservatism:0 "溫和保守主義"
