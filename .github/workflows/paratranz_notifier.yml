@@ -15,41 +15,57 @@ jobs:
           PT_PROJECT_ID: ${{ secrets.PARATRANZ_PROJECT_ID }}
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          # 1. 修正後的 Linux 標準時間計算寫法
-          START_TIME=$(date -u -d '-30 minutes' +'%Y-%m-%dT%H:%M:%SZ')
+          python3 -c "
+          import os, datetime, urllib.request, json
           
-          # 2. 呼叫 Paratranz 歷史紀錄 API
-          RESPONSE=$(curl -s -X GET "https://paratranz.cn{PROJECT_ID}/history?start=${START_TIME}" \
-            -H "Authorization: ${PARATRANZ_TOKEN}" \
-            -H "Content-Type: application/json")
+          # 1. 取得環境變數
+          token = os.getenv('PARATRANZ_TOKEN')
+          project_id = os.getenv('PROJECT_ID')
+          webhook = os.getenv('DISCORD_WEBHOOK')
           
-          # 3. 解析是否有新事件
-          COUNT=$(echo "$RESPONSE" | jq '.results | length')
+          # 2. 精確計算 30 分鐘前的 UTC 時間
+          start_time = (datetime.datetime.utcnow() - datetime.timedelta(minutes=30)).strftime('%Y-%m-%dT%H:%M:%SZ')
           
-          if [ "$COUNT" -gt 0 ]; then
-            echo "發現 $COUNT 筆新動態，正在發送至 Discord..."
-            
-            # 提取最新的一筆動態
-            LATEST_ACTION=$(echo "$RESPONSE" | jq -r '.results[0].action')
-            USER_NAME=$(echo "$RESPONSE" | jq -r '.results[0].user.username')
-            FILE_NAME=$(echo "$RESPONSE" | jq -r '.results[0].file.name // "系統專案"')
-            
-            # 4. 組裝 Discord Embed 訊息
-            PAYLOAD=$(cat <<EOF
-            {
-              "embeds": [{
-                "title": "📝 Paratranz 專案新動態",
-                "description": "**操作用戶：** ${USER_NAME}\n**動作：** ${LATEST_ACTION}\n**相關檔案：** ${FILE_NAME}",
-                "color": 5814783,
-                "url": "https://paratranz.cn{PROJECT_ID}",
-                "footer": { "text": "由 GitHub Actions 自動轉發" }
-              }]
-            }
-          EOF
-          )
-            
-            # 5. 發送至 Discord
-            curl -H "Content-Type: application/json" -X POST -d "$PAYLOAD" "$DISCORD_WEBHOOK"
-          else
-            echo "過去 30 分鐘內無任何新動態。"
-          fi
+          # 3. 呼叫 Paratranz API
+          url = f'https://paratranz.cn{project_id}/history?start={start_time}'
+          req = urllib.request.Request(url)
+          req.add_header('Authorization', token)
+          req.add_header('Content-Type', 'application/json')
+          
+          try:
+              with urllib.request.urlopen(req) as response:
+                  data = json.loads(response.read().decode())
+                  results = data.get('results', [])
+                  count = len(results)
+                  
+                  if count > 0:
+                      print(f'發現 {count} 筆新動態，正在發送至 Discord...')
+                      # 抓取最新一筆動態
+                      latest = results[0]
+                      user_name = latest.get('user', {}).get('username', '未知用戶')
+                      action = latest.get('action', '未知動作')
+                      file_name = latest.get('file', {}).get('name', '系統專案')
+                      
+                      # 4. 組裝 Discord 訊息
+                      payload = {
+                          'embeds': [{
+                              'title': '📝 Paratranz 專案新動態',
+                              'description': f'**操作用戶：** {user_name}\n**動作：** {action}\n**相關檔案：** {file_name}',
+                              'color': 5814783,
+                              'url': f'https://paratranz.cn{project_id}',
+                              'footer': {'text': '由 GitHub Actions 自動轉發'}
+                          }]
+                      }
+                      
+                      # 5. 發送至 Discord Webhook
+                      disc_req = urllib.request.Request(webhook, data=json.dumps(payload).encode('utf-8'), method='POST')
+                      disc_req.add_header('Content-Type', 'application/json')
+                      disc_req.add_header('User-Agent', 'Mozilla/5.0')
+                      with urllib.request.urlopen(disc_req) as disc_res:
+                          print('Discord 訊息發送成功！')
+                  else:
+                      print('過去 30 分鐘內無任何新動態。')
+          except Exception as e:
+              print(f'執行出錯: {e}')
+              exit(1)
+          "
