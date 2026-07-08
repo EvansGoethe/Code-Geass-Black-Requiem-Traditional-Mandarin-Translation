@@ -15,14 +15,7 @@ jobs:
           PARATRANZ_TOKEN: ${{ secrets.PARATRANZ_TOKEN }}
           PROJECT_ID: ${{ secrets.PARATRANZ_PROJECT_ID }}
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        run: |
-          python3 -c "
-          import os, datetime, urllib.request, json
-          
-          token = os.getenv('PARATRANZ_TOKEN', '').strip()
-          project_id = os.getenv('PROJECT_ID', '').strip()
-          webhook = os.getenv('DISCORD_WEBHOOK', '').strip()
-          
+        
         run: |
           python3 -c "
           import os, datetime, urllib.request, json, urllib.error
