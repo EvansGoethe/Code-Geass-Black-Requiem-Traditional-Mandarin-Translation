@@ -24,18 +24,20 @@ jobs:
           webhook = os.getenv('DISCORD_WEBHOOK', '').strip()
 
           if not token or not project_id or not webhook:
-              print('❌ 錯誤：無法讀取 Secrets，請檢查 GitHub 儲存庫設定。')
+              print('❌ Error: Missing Secrets. Please check GitHub repository settings.')
               exit(1)
 
           if not token.startswith('Bearer '):
               token = f'Bearer {token}'
 
-          # 抓取 Paratranz 資料
-          start_time = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(minutes=30)).strftime('%Y-%m-%dT%H:%M:%SZ')
-          api_url = f'https://paratranz.cn/api/projects/{project_id}/history?start={start_time}'
-          print(f'正在連線至 Paratranz API: {api_url}')
+          clean_project_id = str(project_id).split('/')[-1]
 
-          req = urllib.request.Request(api_url)
+          # 1. 抓取 Paratranz 最新動態 (History)
+          start_time = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(minutes=30)).strftime('%Y-%m-%dT%H:%M:%SZ')
+          history_url = f'https://paratranz.cn/api/projects/{clean_project_id}/history?start={start_time}'
+          print(f'Connecting to Paratranz API (History): {history_url}')
+
+          req = urllib.request.Request(history_url)
           req.add_header('Authorization', token)
           req.add_header('Content-Type', 'application/json')
 
@@ -43,42 +45,75 @@ jobs:
               with urllib.request.urlopen(req) as response:
                   data = json.loads(response.read().decode())
           except urllib.error.HTTPError as e:
-              print(f'❌ Paratranz API 請求失敗 (HTTP {e.code})')
-              try:
-                  print(e.read().decode())
-              except:
-                  pass
+              print(f'❌ Paratranz API Request Failed (HTTP {e.code})')
               exit(1)
 
           results = data.get('results', [])
           if not results:
-              print('過去 30 分鐘內無任何新動態。')
+              print('No new updates in the past 30 minutes.')
               exit(0)
 
-          print(f'發現 {len(results)} 筆新動態，正在準備發送最新的一筆至 Discord...')
+          print(f'Found {len(results)} new updates. Preparing to send the latest to Discord...')
           latest = results[0]
 
-          # 安全提取各項數值
           user_data = latest.get('user') or {}
-          user_name = user_data.get('username', '未知用戶')
-          action = latest.get('action', '未知動作')
+          user_name = user_data.get('username', 'Unknown User')
+          action = latest.get('action', 'Unknown Action')
           
           file_obj = latest.get('file')
           if isinstance(file_obj, dict):
-              file_name = file_obj.get('name', '系統專案')
+              file_name = file_obj.get('name', 'System Project')
           else:
-              file_name = '系統專案'
+              file_name = 'System Project'
 
-          # 防呆：確保提取出的 project_id 是純數字，避免 URL 損毀
-          clean_project_id = str(project_id).split('/')[-1]
+          # 2. 抓取專案統計數據 (Files)
+          files_url = f'https://paratranz.cn/api/projects/{clean_project_id}/files'
+          print(f'Connecting to Paratranz API (Stats): {files_url}')
+          
+          req_files = urllib.request.Request(files_url)
+          req_files.add_header('Authorization', token)
+          req_files.add_header('Content-Type', 'application/json')
 
+          total_terms = 0
+          translated_terms = 0
+          reviewed_terms = 0
+          disputed_terms = 0
+
+          try:
+              with urllib.request.urlopen(req_files) as response:
+                  files_data = json.loads(response.read().decode())
+                  for file in files_data:
+                      total_terms += file.get('total', 0)
+                      translated_terms += file.get('translated', 0)
+                      reviewed_terms += file.get('reviewed', 0)
+                      disputed_terms += file.get('disputed', 0)
+          except Exception as e:
+              print(f'⚠️ Could not fetch project stats: {e}')
+          
+          untranslated_terms = total_terms - translated_terms
+          if untranslated_terms < 0:
+              untranslated_terms = 0
+
+          # 3. 準備送出帶有數據欄位的 Discord Payload
           payload = {
               'embeds': [{
-                  'title': '📝 Paratranz 專案新動態',
-                  'description': f'**操作用戶：** {user_name}\n**動作：** {action}\n**相關檔案：** {file_name}',
+                  'title': '📝 Paratranz Project Update',
+                  'description': f'**User:** {user_name}\n**Action:** {action}\n**File:** {file_name}',
                   'color': 5814783,
                   'url': f'https://paratranz.cn/projects/{clean_project_id}',
-                  'footer': {'text': '由 GitHub Actions 自動轉發'}
+                  'fields': [
+                      {
+                          'name': '📊 Project Statistics',
+                          'value': (
+                              f'📝 **Translated/Modified:** {translated_terms}\n'
+                              f'✅ **Reviewed:** {reviewed_terms}\n'
+                              f'❓ **Disputed:** {disputed_terms}\n'
+                              f'⏳ **Untranslated:** {untranslated_terms}'
+                          ),
+                          'inline': False
+                      }
+                  ],
+                  'footer': {'text': 'Forwarded automatically by GitHub Actions'}
               }]
           }
 
@@ -92,13 +127,9 @@ jobs:
 
           try:
               with urllib.request.urlopen(disc_req) as disc_res:
-                  print('✅ Discord 訊息發送成功！')
+                  print('✅ Discord message sent successfully!')
           except urllib.error.HTTPError as e:
-              print(f'❌ Discord Webhook 請求失敗 (HTTP 錯誤代碼 {e.code})')
-              print(f'Discord 錯誤詳細回應: {e.read().decode()}')
-              print(f'⚠️ 我們實際送出的 Payload 是: {json.dumps(payload, ensure_ascii=False)}')
-              exit(1)
-          except Exception as e:
-              print(f'❌ 執行出錯: {e}')
+              print(f'❌ Discord Webhook Request Failed (HTTP {e.code})')
+              print(f'Discord Error Response: {e.read().decode()}')
               exit(1)
           "
