@@ -23,6 +23,25 @@ jobs:
           project_id = os.getenv('PROJECT_ID', '').strip()
           webhook = os.getenv('DISCORD_WEBHOOK', '').strip()
           
+        run: |
+          python3 -c "
+          import os, datetime, urllib.request, json, urllib.error
+          
+          token = os.getenv('PARATRANZ_TOKEN', '').strip()
+          project_id = os.getenv('PROJECT_ID', '').strip()
+          webhook = os.getenv('DISCORD_WEBHOOK', '').strip()
+          
+          if not token or not project_id or not webhook:
+              print('❌ 錯誤：無法讀取 Secrets。')
+              exit(1)
+          
+          if not token.startswith('Bearer '):
+              token = f'Bearer {token}'
+              
+          start_time = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(minutes=30)).strftime('%Y-%m-%dT%H:%M:%SZ')
+          url = f'hhttps://paratranz.cn/api/projects/{project_id}/history?start={start_time}'
+          print(f'正在連線至 Paratranz API: {url}')
+          
           req = urllib.request.Request(url)
           req.add_header('Authorization', token)
           req.add_header('Content-Type', 'application/json')
