@@ -28,12 +28,27 @@ jobs:
           if not token or not project_id or not webhook:
               print('❌ 錯誤：GitHub Secrets 填寫不完整，請檢查 PARATRANZ_TOKEN, PROJECT_ID 或 DISCORD_WEBHOOK_URL 是否有正確設定。')
               exit(1)
+              
+          # 2. 列印偵錯資訊 (隱藏敏感部分)
+          print('=== [偵錯資訊] 檢查您的 Secrets 設定 ===')
+          print(f'1. PROJECT_ID 讀取結果: \"{project_id}\"')
+          if webhook:
+              print(f'2. DISCORD_WEBHOOK 開頭前 30 字元: \"{webhook[:30]}...\"')
+              if '/api/webhooks/' not in webhook:
+                  print('   ❌ 警告：您的 Discord 網址中似乎缺少了 /api/webhooks/ ，請重新至 Discord 複製！')
+          else:
+              print('2. DISCORD_WEBHOOK 讀取結果: 空值 (None)')
+          print('========================================')
           
-          # 2. 計算 30 分鐘前的 UTC 時間 (修正 DeprecationWarning 警告)
+          if not token or not project_id or not webhook:
+              print('❌ 錯誤：GitHub Secrets 填寫不完整，請檢查變數名稱與內容。')
+              exit(1)
+              
           start_time = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(minutes=30)).strftime('%Y-%m-%dT%H:%M:%SZ')
           
-          # 3. 呼叫 Paratranz API
           url = f'https://paratranz.cn{project_id}/history?start={start_time}'
+          print(f'正在嘗試連線至 Paratranz API: {url}')
+          
           req = urllib.request.Request(url)
           req.add_header('Authorization', token)
           req.add_header('Content-Type', 'application/json')
@@ -46,13 +61,11 @@ jobs:
                   
                   if count > 0:
                       print(f'發現 {count} 筆新動態，正在發送至 Discord...')
-                      # 抓取最新一筆動態
-                      latest = results[0]
+                      latest = results[0] if isinstance(results, list) and len(results) > 0 else {}
                       user_name = latest.get('user', {}).get('username', '未知用戶')
                       action = latest.get('action', '未知動作')
                       file_name = latest.get('file', {}).get('name', '系統專案') if latest.get('file') else '系統專案'
                       
-                      # 4. 組裝 Discord 訊息
                       payload = {
                           'embeds': [{
                               'title': '📝 Paratranz 專案新動態',
@@ -63,7 +76,6 @@ jobs:
                           }]
                       }
                       
-                      # 5. 發送至 Discord Webhook
                       disc_req = urllib.request.Request(webhook, data=json.dumps(payload).encode('utf-8'), method='POST')
                       disc_req.add_header('Content-Type', 'application/json')
                       disc_req.add_header('User-Agent', 'Mozilla/5.0')
@@ -72,6 +84,6 @@ jobs:
                   else:
                       print('過去 30 分鐘內無任何新動態。')
           except Exception as e:
-              print(f'執行出錯: {e}')
+              print(f'❌ 連線或執行出錯: {e}')
               exit(1)
           "
