@@ -13,7 +13,7 @@ jobs:
         env:
           # 關鍵修正：確保這裡的名稱與下方 Python 讀取的 os.getenv 完全一致
           PARATRANZ_TOKEN: ${{ secrets.PARATRANZ_TOKEN }}
-          PROJECT_ID: ${{ secrets.PARATRANZ_PROJECT_ID }}
+          PARATRANZ_PROJECT_ID: ${{ secrets.PARATRANZ_PROJECT_ID }}
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           python3 -c "
