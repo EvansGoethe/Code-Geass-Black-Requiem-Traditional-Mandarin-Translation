@@ -20,8 +20,8 @@ jobs:
           import os, datetime, urllib.request, json
           
           # 1. 取得環境變數
-          token = os.getenv('PARATRANZ_TOKEN')
-          project_id = os.getenv('PROJECT_ID')
+          token = os.getenv('PT_TOKEN')
+          project_id = os.getenv('PT_PROJECT_ID')
           webhook = os.getenv('DISCORD_WEBHOOK')
           
           # 防呆檢查：如果 Secrets 沒填對，直接輸出提示不崩潰
