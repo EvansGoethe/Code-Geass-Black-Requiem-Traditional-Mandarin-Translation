@@ -29,7 +29,7 @@ jobs:
               
           start_time = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(minutes=30)).strftime('%Y-%m-%dT%H:%M:%SZ')
           
-          url = f'https://paratranz.cn{project_id}/history?start={start_time}'
+          url = f'https://paratranz.cn/projects/{project_id}/history?start={start_time}'
           print(f'正在連線至 Paratranz API: {url}')
           
           req = urllib.request.Request(url)
