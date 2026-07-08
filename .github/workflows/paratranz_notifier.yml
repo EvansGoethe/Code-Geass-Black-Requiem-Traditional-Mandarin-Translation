@@ -11,9 +11,9 @@ jobs:
     steps:
       - name: Fetch Paratranz History and Notify Discord
         env:
-          PARATRANZ_TOKEN: ${{ 07f3acc479ef2495f0fd772f3f75c039 }}
-          PROJECT_ID: ${{ 19644 }}
-          DISCORD_WEBHOOK: ${{ https://discord.com/api/webhooks/1524301331194577036/Lqgt3OY1tIDvskV5mvAifv_XV1_Ci7OOVxGfodBhanGMXqrHi3qBbf86M4KPqQTjQX2B }}
+          PT_TOKEN: ${{ secrets.PARATRANZ_TOKEN }}
+          PT_PROJECT_ID: ${{ secrets.PARATRANZ_PROJECT_ID }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           # 1. 計算 30 分鐘前的 ISO 時間戳記
           START_TIME=$(date -u -d "30 minutes ago" +"%Y-%m-%dT%H:%M:%SZ")
