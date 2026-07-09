@@ -24,14 +24,6 @@ jobs:
         run: |
           echo "開始從 ParaTranz 獲取翻譯..."
           
-      - name: 處理 P社專用格式 (轉 UTF-8 BOM 與語言替換)
-        run: |
-          python -c "
-          import os, glob, codecs
-          target_dir = 'localisation/english'
-          os.makedirs(target_dir, exist_ok=True)
-          "
-          
           # 🛑 關鍵修復：加入 -L 參數，讓 curl 自動跟隨 302 轉址去下載真正的檔案
           HTTP_STATUS=$(curl -s -L -w "%{http_code}" -H "Authorization: $PT_TOKEN" "https://paratranz.cn/api/projects/$PT_PROJECT_ID/artifacts/download" -o translation.zip)
           
@@ -45,6 +37,17 @@ jobs:
           
           echo "✅ 下載成功，準備解壓縮..."
           unzip -o translation.zip -d ./pt_download/
+
+      - name: 處理 P社專用格式 (轉 UTF-8 BOM 與語言替換)
+        run: |
+          python -c "
+          import os, glob, codecs
+          target_dir = 'localisation/english'
+          os.makedirs(target_dir, exist_ok=True)
+          for filepath in glob.glob('./pt_download/**/*.yml', recursive=True):
+              filename = os.path.basename(filepath)
+              new_filepath = os.path.join(target_dir, new_filename)
+          "
 
       - name: 自動提交與推送到 GitHub
         uses: stefanzweifel/git-auto-commit-action@v5
