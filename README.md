@@ -20,7 +20,7 @@ This repository contains the Traditional Chinese translation files for the Heart
 4. **自動推送**：轉換完成的檔案將自動 Commit 至本倉庫的 `localisation/english` 目錄下。
 
 ### 🚀 如何使用
-1. 請於 Steam 工作坊訂閱即將發布的 Steam 工作坊漢化版本。
+1. 請於 Steam 工作坊訂閱發布的[漢化版本](https://steamcommunity.com/sharedfiles/filedetails/?id=3760459263)。
 
 ### 🤝 參與翻譯
 如果你對《Code Geass》充滿熱情，歡迎加入我們的翻譯行列！請前往本專案的 ParaTranz 頁面[申請加入](https://paratranz.cn/projects/19644)。
@@ -40,7 +40,7 @@ This repository features a fully automated translation pipeline:
 * **Auto-Commit**: The processed files are automatically pushed to the `localisation/english` directory in this repository.
 
 ### 🚀 How to Use
-1. Subscribe to the localized mod on the Steam Workshop (Link TBA).
+1. Subscribe to the localized mod on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3760459263).
 
 ### ⚖️ Credits & Disclaimer
 * All original assets, mechanics, and lore belong to the **Code Geass - Black Requiem Development Team**. 
