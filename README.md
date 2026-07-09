@@ -16,13 +16,11 @@ This repository contains the Traditional Chinese translation files for the Heart
 本專案採用全自動化的翻譯同步架構：
 1. **翻譯協作平台**：所有翻譯工作皆在 [ParaTranz] 平台上進行。
 2. **GitHub Actions 每日同步**：透過自動化腳本，GitHub 機器人會自動抓取 ParaTranz 上最新打包的翻譯檔。
-3. **格式自動轉換**：腳本會自動將 P 社的 `.yml` 檔案轉換為遊戲引擎規定的 `UTF-8 WITH BOM` 編碼，並將鍵值與檔名自動替換為 `l_simp_chinese` 以確保遊戲正確讀取。
-4. **自動推送**：轉換完成的檔案將自動 Commit 至本倉庫的 `localisation/simp_chinese` 目錄下。
+3. **格式自動轉換**：腳本會自動將 P 社的 `.yml` 檔案轉換為遊戲引擎規定的 `UTF-8 WITH BOM` 編碼以確保遊戲正確讀取。
+4. **自動推送**：轉換完成的檔案將自動 Commit 至本倉庫的 `localisation/english` 目錄下。
 
 ### 🚀 如何使用
-1. 請先於 Steam 工作坊訂閱原模組：[Code Geass - Black Requiem](https://steamcommunity.com/workshop/filedetails/?id=2785523030)。
-2. 下載本倉庫的程式碼，並將其作為本地 Mod 載入，或訂閱即將發布的 Steam 工作坊漢化包。
-3. 啟動遊戲時，請確保**本漢化模組的載入順序在原模組之下**。
+1. 請於 Steam 工作坊訂閱即將發布的 Steam 工作坊漢化版本。
 
 ### 🤝 參與翻譯
 如果你對《Code Geass》充滿熱情，歡迎加入我們的翻譯行列！請前往本專案的 ParaTranz 頁面申請加入（請在此替換為你的 ParaTranz 專案連結）。
